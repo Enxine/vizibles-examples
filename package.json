@@ -26,5 +26,5 @@
   "dependencies": {
     "vizibles": "0.7.0",
     "yeelight2": "^1.3.4"
-  },
+  }
 }
