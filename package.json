@@ -8,18 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Enxine/vizibles-examples.git"
+    "url": "git+https://github.com/Enxine/vizibles-nodejs-examples.git"
   },
   "keywords": [
     "vizibles",
     "iot",
+    "internet of things",
     "things",
     "examples"
   ],
   "author": "Enxine <info@vizibles.com> (https://vizibles.com)",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/Enxine/vizibles-examples/issues"
+    "url": "https://github.com/Enxine/vizibles-nodejs-examples/issues"
   },
-  "homepage": "https://github.com/Enxine/vizibles-examples#readme"
+  "homepage": "https://github.com/Enxine/vizibles-nodejs-examples#readme"
 }
