@@ -20,6 +20,15 @@ var properties = {
     rgb: ''
 };
 
+function getHexCode(rgb) {
+    var result = '' + (+rgb).toString(16);
+    for (var i = result.length; i < 6; i++) {
+	result = '0' + result;
+    }
+    result = '#' + result;
+    return result;
+}
+
 function lightOn() {
     light.set_power('on');
     properties.power = 'on';
@@ -64,26 +73,28 @@ function changeBright(amount) {
 function reset(value) {
     properties.power = 'on';
     properties.bright = '50';
-    properties.rgb = '16777215';
+    properties.rgb = '#FFFFFF';
 
     light.set_power(properties.power);
     setTimeout(function() { light.set_bright(properties.bright);}, 100);
-    setTimeout(function() { light.set_rgb(properties.rgb);}, 200);
+    setTimeout(function() { light.set_rgb(parseInt(hexRGB.replace('#', '0x'), 16));}, 200);
     setTimeout(function() { vizibles.update(properties);}, 300);
 }
 
 function setRGB(hexRGB) {
     // 'ColorPicker' widget gives a string with format #rrggbb
-    var rgb = parseInt(hexRGB.replace('#', '0x'), 16);
-    light.set_rgb(rgb);
-    properties.rgb = rgb;
-    vizibles.update({rgb: rgb});
+    light.set_rgb(parseInt(hexRGB.replace('#', '0x'), 16));
+    properties.rgb = hexRGB;
+    vizibles.update({rgb: properties.rgb});
 }
 
 function getProperties() {
     var promise = light.get_prop(["power", "bright", "rgb"]);
     promise.then(function(result) {
 	properties = result;
+	if (result.rgb) {
+	    result.rgb = getHexCode(result.rgb);
+	}
 	vizibles.update(result);
 	started = true;
 	return result;
@@ -118,10 +129,13 @@ function checkStatus() {
 		status.bright = result.bright;
 		updateStatus = true;
 	    }
-	    if (result.rgb && (result.rgb != '') && (properties.rgb != result.rgb)) {
-		properties.rgb = result.rgb;
-		status.rgb = result.rgb;
-		updateStatus = true;
+	    if (result.rgb && (result.rgb != '')) {
+		var hexRGB = getHexCode(result.rgb);
+		if(properties.rgb != hexRGB) {
+		    properties.rgb = hexRGB;
+		    status.rgb = hexRGB;
+		    updateStatus = true;
+		}
 	    }
 	    if (updateStatus) {
 		//console.log('updating: ' + JSON.stringify(status));
